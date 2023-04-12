@@ -1,0 +1,16 @@
+For reference, some links:
+
+GitHub (GEE Python implementation): https://github.com/Servir-Mekong/hydra-floods
+Docs: https://servir-mekong.github.io/hydra-floods/installation/
+Operational implementation over SE-Asia: https://hydrafloods-servir.adpc.net/ (main page hangs a bit upon loading due to a bug, to be fixed when new SERVIR-SEA starts up, you can also go directly to the map https://hydrafloods-servir.adpc.net/map/)
+
+Within SERVIR-SEA we'll continue developing HYDRAFloods. First up on the list are optical-SAR data fusion and improved water/flood depths.
+
+
+Some papers:
+
+Gena's first edge-Otsu implementation on optical: https://doi.org/10.3390/rs8050386
+My method to apply it on SAR: https://doi.org/10.3390/rs12152469
+Included in a big study on generic water detection with optical and SAR: https://doi.org/10.3390/rs14102410
+With flood depths: https://doi.org/10.3390/rs14215313
+As validation for compound flood modelling (just out last week  ): https://doi.org/10.5194/nhess-23-823-2023
