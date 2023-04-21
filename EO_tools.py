@@ -64,7 +64,7 @@ class React:
             print(f"Failed to download {name_file}.")
         return  
     
-    def plotfloodextent(self,df, outputdir):
+    def plotfloodextent(self,df, outputdir, id):
         dff = df.reset_index()
         chart = alt.Chart(dff).mark_bar(size=1).encode(
             x='Year:T',
@@ -75,7 +75,7 @@ class React:
                 alt.Tooltip('Year:T', title='Date'),
                 alt.Tooltip('Pixels:Q', title='Pixels')
             ]).properties(width=600, height=300)
-        chart.save(outputdir + "/" + "v4" + "_GPP_daily.html")
+        chart.save(outputdir + "/" + id + "_GPP_daily.html")
         return
     
     def hydroperiod(self, col, region, band):
@@ -150,7 +150,7 @@ class React:
         for yr in range(startyear,endyear+1):
             ts = ee.Date.fromYMD(yr, 1, 1)
             te = ts.advance(1, 'year')
-            col_filtered = getcollection(ts, te, region).select(band).mean()
+            col_filtered = self.getcollection(ts, te, region).select(band).mean()
             for band in col_filtered.bandNames().getInfo():
                 print(band)
             print(yr)
@@ -182,6 +182,6 @@ end       = 2021
 band      ='mndwi'
 outputdir = 'C:/Users/fuentesm/CISNE/REACT/Maps/'
 re = React()
-re.downloadhydroperiodperyear(region,start,end,outputdir, band, 'v6')
-re.erotionacretion(region,start,end,outputdir, band, 'v6')
-re.floodextension(region,start,end,outputdir, band, 'v6')
+# re.downloadhydroperiodperyear(region,start,end,outputdir, band, 'v7')
+# re.erotionacretion(region,start,end,outputdir, band, 'v7')
+re.floodextension(region,start,end,outputdir, band, 'v7')
