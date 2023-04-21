@@ -122,6 +122,7 @@ class React:
     def morphology(self,region,startyear,endyear,band,outputdir, id): 
         print('-----------Morphology analysis----------')
         print('-Flood extent estimation:')
+        print('\n')
         images_annual_otsu = []
         for yr in range(startyear,endyear+1):
             ts = ee.Date.fromYMD(yr, 1, 1)
@@ -141,6 +142,7 @@ class React:
             print('\n')
 
         print('-Erosion acretion estimation:')
+        print('\n')
         for yr, ind in zip(range(startyear,endyear),range(len(images_annual_otsu)-1)):
             diff_image = images_annual_otsu[ind+1].subtract(images_annual_otsu[ind])
             print("Year of analysis: "+ str(yr+1))
