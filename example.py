@@ -1,7 +1,7 @@
 #main code
 import json
 import ee
-from ReactTool import React
+from react.react.ReactTool import React
 
 ee.Initialize()
 

@@ -10,7 +10,7 @@ Within SERVIR-SEA we'll continue developing HYDRAFloods. First up on the list ar
 Some papers:
 
 Gena's first edge-Otsu implementation on optical: https://doi.org/10.3390/rs8050386
-My method to apply it on SAR: https://doi.org/10.3390/rs12152469
+Method to apply it on SAR (by Arjen Haag): https://doi.org/10.3390/rs12152469
 Included in a big study on generic water detection with optical and SAR: https://doi.org/10.3390/rs14102410
 With flood depths: https://doi.org/10.3390/rs14215313
-As validation for compound flood modelling (just out last week  ): https://doi.org/10.5194/nhess-23-823-2023
+As validation for compound flood modelling: https://doi.org/10.5194/nhess-23-823-2023
