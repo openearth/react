@@ -1,21 +1,20 @@
 #main code
-import json
 import ee
-from react.react.ReactTool import React
+from react.ReactTool import React
 
 ee.Initialize()
 
-with open('C:/Users/fuentesm/CISNE/REACT/Maps/River_mouth.geojson') as f:
-    data = json.load(f)
+# Example of Mahanadi River, India
+xx, yy, XX, YY = 85.125504,20.321448,85.469513,20.419935
 
-coords    = data['features'][0]['geometry']['coordinates']
-region    = ee.Geometry.Polygon(coords[0])
-start     = 2000
-end       = 2002
-band      ='mndwi'
-outputdir = 'C:/Users/fuentesm/CISNE/REACT/Maps/'
-id        = 'A'
+region    = ee.Geometry.Rectangle([xx, yy, XX, YY])
+start     = 2020
+end       = 2021
+band      ='ndwi'
+outputdir = r'..//data//'
+id        = 'test-mahanadi-ndwi'
+
 re = React()
 re.floodFrequency(region,start,end,outputdir,band,id)
 re.morphology(region,start,end,band,outputdir,id)
-re.floodExtention(region,start,end,band,outputdir,id)
+re.floodExtent(region,start,end,band,outputdir,id)

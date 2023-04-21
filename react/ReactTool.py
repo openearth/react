@@ -1,13 +1,9 @@
 import hydrafloods as hf
-import ee, geemap
-import folium
-from folium import plugins
+import ee
 from eepackages import assets
-from eepackages import utils
 import urllib.request
 import pandas as pd
 import altair as alt
-import openpyxl
 
 ee.Initialize()
 
@@ -93,7 +89,7 @@ class React:
         chart.save(outputdir + "/" + id + "_flood_extent.html")
         return 
 
-    def floodExtention(self,region,startyear,endyear,band,outputdir, id):
+    def floodExtent(self,region,startyear,endyear,band,outputdir, id):
         print('-----------Flood extent analysis----------')
         image_year = []
         pixel_image_list = []
@@ -115,7 +111,7 @@ class React:
             print('\n')
         table    = {'Year':image_year,'Pixels':pixel_image_list}
         df = pd.DataFrame(table).set_index('Year') 
-        df.to_csv(outputdir + "/" + id + "_flood_extend.csv") 
+        df.to_csv(outputdir + "/" + id + "_floodextent.csv") 
         self.plotfloodextent(df, outputdir,id)
         return 
 
@@ -199,22 +195,3 @@ class React:
             self.downloadUrl(count, name_file_count,'water_count',outputdir,region)
             print('\n')
         return
-
-    
-# #Main code. This code can be run from another code. 
-# import json
-
-# with open('C:/Users/fuentesm/CISNE/REACT/Maps/River_mouth.geojson') as f:
-#     data = json.load(f)
-
-# coords    = data['features'][0]['geometry']['coordinates']
-# region    = ee.Geometry.Polygon(coords[0])
-# start     = 2000
-# end       = 2002
-# band      ='mndwi'
-# outputdir = 'C:/Users/fuentesm/CISNE/REACT/Maps/'
-# id        = 'Object_Oriented_v1'
-# re = React()
-# re.floodFrequency(region,start,end,outputdir,band,id)
-# re.morphology(region,start,end,band,outputdir,id)
-# re.floodExtention(region,start,end,band,outputdir,id)

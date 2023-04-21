@@ -5,7 +5,7 @@ The REACT tool aims to rely on open-source, publicly available datasets to condu
 ## Getting started
 First, install the environment.
 ```
-conda env create -f react_environment.yaml
+conda env create -f react_environment.yml
 ```
 
 Next, ensure you have a google earth engine account. If not, sign-up [here](https://code.earthengine.google.com/register). You will need it to authenticate/initialize earth engine packages within the tool.
