@@ -1,5 +1,6 @@
 import hydrafloods as hf
 import ee
+import os
 from eepackages import assets
 import urllib.request
 import pandas as pd
@@ -63,11 +64,20 @@ class React:
         return otsu_col_annual_nonzero
 
     def downloadUrl(self, img, name_file,band,outputdir,region):
-        file_path_tiff = outputdir + name_file + ".tiff"
-        urlD = img.getDownloadUrl({'bands' : band,
-                                        'region': region,
-                                        'scale' : 30,
-                                        'format': 'GEO_TIFF'})
+        additional_path = name_file + ".tiff"
+        file_path_tiff = os.path.join(outputdir, additional_path)
+
+      # Apply unmask(0) to the image
+        img_unmasked = img.unmask()
+    
+        urlD = img_unmasked.getDownloadUrl({
+            'bands': band,
+            'region': region,
+            'scale': 30,
+            'format': 'GEO_TIFF'
+        })
+        # urllib.request.urlretrieve(urlD, file_path_tiff)
+
         try:
             urllib.request.urlretrieve(urlD, file_path_tiff)
             print(f"{name_file} has been downloaded successfully.")
