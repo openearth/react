@@ -15,6 +15,6 @@ outputdir = r'..//data//'
 id        = 'test-mahanadi-ndwi'
 
 re = React()
-re.floodFrequency(region,start,end,outputdir,band,id)
+re.floodFrequency(region,start,end,band,outputdir,id)
 re.morphology(region,start,end,band,outputdir,id)
 re.floodExtent(region,start,end,band,outputdir,id)
