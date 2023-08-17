@@ -1,5 +1,5 @@
 import hydrafloods as hf
-import ee
+import ee, os
 from eepackages import assets
 import urllib.request
 import pandas as pd
@@ -63,7 +63,7 @@ class React:
         return otsu_col_annual_nonzero
 
     def downloadUrl(self, img, name_file,band,outputdir,region):
-        file_path_tiff = outputdir + name_file + ".tiff"
+        file_path_tiff = os.path.join(outputdir, f'{name_file}.tiff')
         urlD = img.getDownloadUrl({'bands' : band,
                                         'region': region,
                                         'scale' : 30,
@@ -111,7 +111,7 @@ class React:
             print('\n')
         table    = {'Year':image_year,'Pixels':pixel_image_list}
         df = pd.DataFrame(table).set_index('Year') 
-        df.to_csv(outputdir + "/" + id + "_floodextent.csv") 
+        df.to_csv(os.path.join(outputdir, f'{id}_floodextent.csv')) 
         self.plotfloodextent(df, outputdir,id)
         return 
 
