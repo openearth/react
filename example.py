@@ -4,15 +4,16 @@ from react.ReactTool import React
 
 ee.Initialize()
 
-# Example of Mahanadi River, India
-xx, yy, XX, YY = 85.125504,20.321448,85.469513,20.419935
+# Example of Lower Tenryu, Japan
+xx, yy, XX, YY = 137.774734,34.647896,137.838593,34.871848
+
 
 region    = ee.Geometry.Rectangle([xx, yy, XX, YY])
-start     = 2020
-end       = 2021
+start     = 2015
+end       = 2022
 band      ='ndwi'
-outputdir = r'..//data//'
-id        = 'test-mahanadi-ndwi'
+outputdir = r'D:\react\data\lower-tenryu'
+id        = 'lower-tenryu-ndwi'
 
 re = React()
 re.floodFrequency(region,start,end,outputdir,band,id)
