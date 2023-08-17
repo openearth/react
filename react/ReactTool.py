@@ -5,8 +5,6 @@ import urllib.request
 import pandas as pd
 import altair as alt
 
-ee.Initialize()
-
 class React:
     """_summary_
     """    
@@ -86,7 +84,7 @@ class React:
                 alt.Tooltip('Year:T', title='Date'),
                 alt.Tooltip('Pixels:Q', title='Pixels')
             ]).properties(width=600, height=300)
-        chart.save(outputdir + "/" + id + "_flood_extent.html")
+        chart.save(outputdir + "/" + id + "_number_of_flooded_pixels_per_annual_mean_composite_image.html")
         return 
 
     def floodExtent(self,region,startyear,endyear,band,outputdir, id):
@@ -94,21 +92,29 @@ class React:
         image_year = []
         pixel_image_list = []
         for yr in range(startyear,endyear+1):
+            # create a collection within the time start(ts) and time end(te)
             ts = ee.Date.fromYMD(yr, 1, 1)
             te = ts.advance(1, 'year')
             col_filtered = self.getCollection(ts, te, region).select(band).mean()    #apply mean and then Otsu
             print("Year of analysis: "+ str(yr))
+            
             for band in col_filtered.bandNames().getInfo():
                 print("Band to use: "+ band)
+
+            # apply otsu threshold over annual collection
             annual_otsu = self.annualOtsu(col_filtered, region, band)
-            name_file_flood_extent = id + "_flood_extent_"+ str(yr)
+            
+            name_file_flood_extent = id + "_flood_extent_per_annual_mean_composite_image_"+ str(yr)
             self.downloadUrl(annual_otsu, name_file_flood_extent,'water_annual', outputdir,region)
 
+            # count number of flooded pixels per year
             reducer     = ee.Reducer.sum()
             pixels_sum  = annual_otsu.select(['water_annual']).reduceRegion(reducer= reducer,geometry=region,scale=30,maxPixels=1e9).getInfo()
             image_year.append(str(yr)+'-01-01')
             pixel_image_list.append(pixels_sum['water_annual'])
             print('\n')
+
+        # create table of number of flooded pixels per year
         table    = {'Year':image_year,'Pixels':pixel_image_list}
         df = pd.DataFrame(table).set_index('Year') 
         df.to_csv(os.path.join(outputdir, f'{id}_floodextent.csv')) 
@@ -121,6 +127,7 @@ class React:
         print('\n')
         images_annual_otsu = []
         for yr in range(startyear,endyear+1):
+            # create a collection within the time start(ts) and time end(te)
             ts = ee.Date.fromYMD(yr, 1, 1)
             te = ts.advance(1, 'year')
             col_filtered = self.getCollection(ts, te, region).select(band).mean()
@@ -131,8 +138,8 @@ class React:
 
             globals()['annualotsu_%s' %str(yr)] = self.annualOtsu(col_filtered, region, band)
 
-            name_file_erotion = id + "_flood_extent_morphology_"+ str(yr+1) 
-            self.downloadUrl(globals()['annualotsu_%s' %str(yr)], name_file_erotion,'water_annual', outputdir,region)
+            # name_file_erotion = id + "_flood_extent_annual_composite_image_"+ str(yr) 
+            # self.downloadUrl(globals()['annualotsu_%s' %str(yr)], name_file_erotion,'water_annual', outputdir,region)
 
             images_annual_otsu.append(globals()['annualotsu_%s' %str(yr)])
             print('\n')
@@ -172,11 +179,13 @@ class React:
                                 }
         
         frequency = overall.expression('water_sum/water_count',bands_for_expressions).rename("frequency")
+        
         return otsu_col_sum, otsu_col_count, frequency
 
-    def floodFrequency(self,region,startyear,endyear,outputdir, band, id):  
+    def floodFrequency(self,region,startyear,endyear,band,outputdir,id):  
         print('-----------Flood Frequency----------')
         for yr in range(startyear,endyear+1):
+            # create a collection within the time start(ts) and time end(te)
             ts = ee.Date.fromYMD(yr, 1, 1)
             te = ts.advance(1, 'year')
             col_filtered = self.getCollection(ts, te, region)
@@ -184,11 +193,12 @@ class React:
             print("Year of analysis: "+ str(yr))
             print("Number of images: "+ str(col_filtered.size().getInfo()))
             
+            # get the annual flood frequency
             sum, count, frequency = self.annualFloodFrequency(col_filtered, region, band)
 
-            name_file_frequency = id + "_flood_frequency_percentage_"+ str(yr)
-            name_file_sum       = id + "_flood_frequency_sum_"+ str(yr)
-            name_file_count     = id + "_valid_pixels_"+ str(yr)
+            name_file_frequency = id + "_flood_frequency_"+ str(yr)
+            name_file_sum       = id + "_flooded_pixels_over_"+ str(yr)
+            name_file_count     = id + "_available_pixels_over_"+ str(yr)
 
             self.downloadUrl(frequency, name_file_frequency,'frequency',outputdir,region)
             self.downloadUrl(sum,name_file_sum,'water_sum',outputdir,region)
