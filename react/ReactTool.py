@@ -1,5 +1,6 @@
 import hydrafloods as hf
-import ee, os
+import ee
+import os
 from eepackages import assets
 import urllib.request
 import pandas as pd
@@ -61,11 +62,20 @@ class React:
         return otsu_col_annual_nonzero
 
     def downloadUrl(self, img, name_file,band,outputdir,region):
-        file_path_tiff = os.path.join(outputdir, f'{name_file}.tiff')
-        urlD = img.getDownloadUrl({'bands' : band,
-                                        'region': region,
-                                        'scale' : 30,
-                                        'format': 'GEO_TIFF'})
+        additional_path = name_file + ".tiff"
+        file_path_tiff = os.path.join(outputdir, additional_path)
+
+      # Apply unmask(0) to the image
+        img_unmasked = img.unmask()
+    
+        urlD = img_unmasked.getDownloadUrl({
+            'bands': band,
+            'region': region,
+            'scale': 30,
+            'format': 'GEO_TIFF'
+        })
+        # urllib.request.urlretrieve(urlD, file_path_tiff)
+
         try:
             urllib.request.urlretrieve(urlD, file_path_tiff)
             print(f"{name_file} has been downloaded successfully.")
@@ -117,7 +127,7 @@ class React:
         # create table of number of flooded pixels per year
         table    = {'Year':image_year,'Pixels':pixel_image_list}
         df = pd.DataFrame(table).set_index('Year') 
-        df.to_csv(os.path.join(outputdir, f'{id}_floodextent.csv')) 
+        df.to_csv(outputdir + "/" + id + "_number_of_flooded_pixels_per_annual_mean_composite_image.csv") 
         self.plotfloodextent(df, outputdir,id)
         return 
 
