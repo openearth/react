@@ -105,24 +105,29 @@ class React:
             # create a collection within the time start(ts) and time end(te)
             ts = ee.Date.fromYMD(yr, 1, 1)
             te = ts.advance(1, 'year')
-            col_filtered = self.getCollection(ts, te, region).select(band).mean()    #apply mean and then Otsu
-            print("Year of analysis: "+ str(yr))
-            
-            for band in col_filtered.bandNames().getInfo():
-                print("Band to use: "+ band)
+            col = self.getCollection(ts,te,region)
+            if col.size().getInfo() == 0:
+                print(f'no images for {yr}, moving on to next year')
+                continue
+            else:
+                col_filtered = col.select(band).mean()    #apply mean and then Otsu
+                print("Year of analysis: "+ str(yr))
+                
+                for band in col_filtered.bandNames().getInfo():
+                    print("Band to use: "+ band)
 
-            # apply otsu threshold over annual collection
-            annual_otsu = self.annualOtsu(col_filtered, region, band)
-            
-            name_file_flood_extent = id + "_flood_extent_per_annual_mean_composite_image_"+ str(yr)
-            self.downloadUrl(annual_otsu, name_file_flood_extent,'water_annual', outputdir,region)
+                # apply otsu threshold over annual collection
+                annual_otsu = self.annualOtsu(col_filtered, region, band)
+                
+                name_file_flood_extent = id + "_flood_extent_per_annual_mean_composite_image_"+ str(yr)
+                self.downloadUrl(annual_otsu, name_file_flood_extent,'water_annual', outputdir,region)
 
-            # count number of flooded pixels per year
-            reducer     = ee.Reducer.sum()
-            pixels_sum  = annual_otsu.select(['water_annual']).reduceRegion(reducer= reducer,geometry=region,scale=30,maxPixels=1e9).getInfo()
-            image_year.append(str(yr)+'-01-01')
-            pixel_image_list.append(pixels_sum['water_annual'])
-            print('\n')
+                # count number of flooded pixels per year
+                reducer     = ee.Reducer.sum()
+                pixels_sum  = annual_otsu.select(['water_annual']).reduceRegion(reducer= reducer,geometry=region,scale=30,maxPixels=1e9).getInfo()
+                image_year.append(str(yr)+'-01-01')
+                pixel_image_list.append(pixels_sum['water_annual'])
+                print('\n')
 
         # create table of number of flooded pixels per year
         table    = {'Year':image_year,'Pixels':pixel_image_list}
@@ -140,21 +145,25 @@ class React:
             # create a collection within the time start(ts) and time end(te)
             ts = ee.Date.fromYMD(yr, 1, 1)
             te = ts.advance(1, 'year')
-            col_filtered = self.getCollection(ts, te, region).select(band).mean()
+            col = self.getCollection(ts,te,region)
+            if col.size().getInfo() == 0:
+                print(f'no images for {yr}, moving on to next year')
+                continue
+            else:
+                col_filtered = col.select(band).mean()
+                print("Year of analysis: "+ str(yr))
+                for band in col_filtered.bandNames().getInfo():
+                    print("Band to use: "+ band)
 
-            print("Year of analysis: "+ str(yr))
-            for band in col_filtered.bandNames().getInfo():
-                print("Band to use: "+ band)
+                globals()['annualotsu_%s' %str(yr)] = self.annualOtsu(col_filtered, region, band)
 
-            globals()['annualotsu_%s' %str(yr)] = self.annualOtsu(col_filtered, region, band)
+                # name_file_erotion = id + "_flood_extent_annual_composite_image_"+ str(yr) 
+                # self.downloadUrl(globals()['annualotsu_%s' %str(yr)], name_file_erotion,'water_annual', outputdir,region)
 
-            # name_file_erotion = id + "_flood_extent_annual_composite_image_"+ str(yr) 
-            # self.downloadUrl(globals()['annualotsu_%s' %str(yr)], name_file_erotion,'water_annual', outputdir,region)
+                images_annual_otsu.append(globals()['annualotsu_%s' %str(yr)])
+                print('\n')
 
-            images_annual_otsu.append(globals()['annualotsu_%s' %str(yr)])
-            print('\n')
-
-        print('-Erosion acretion estimation:')
+        print('-Erosion accretion estimation:')
         print('\n')
         for yr, ind in zip(range(startyear,endyear),range(len(images_annual_otsu)-1)):
             diff_image = images_annual_otsu[ind+1].subtract(images_annual_otsu[ind])
@@ -165,6 +174,12 @@ class React:
             name_file_erotion = id +"_morphology_"+ str(yr+1) 
             self.downloadUrl(diff_image, name_file_erotion,'water_difference', outputdir,region)
             print('\n')
+        
+        print(f'Morphological change between {startyear} and {endyear}:')
+        diff_image = images_annual_otsu[-1].subtract(images_annual_otsu[0])
+        diff_image = diff_image.rename('water_difference').select('water_difference')
+        fname = f'{id}_morphology_{startyear}_{endyear}'
+        self.downloadUrl(diff_image, fname, 'water_difference', outputdir, region)
         return 
 
     def annualFloodFrequency(self,col, region, band):
@@ -198,20 +213,24 @@ class React:
             # create a collection within the time start(ts) and time end(te)
             ts = ee.Date.fromYMD(yr, 1, 1)
             te = ts.advance(1, 'year')
-            col_filtered = self.getCollection(ts, te, region)
-            
-            print("Year of analysis: "+ str(yr))
-            print("Number of images: "+ str(col_filtered.size().getInfo()))
-            
-            # get the annual flood frequency
-            sum, count, frequency = self.annualFloodFrequency(col_filtered, region, band)
+            col = self.getCollection(ts,te,region)
+            if col.size().getInfo() == 0:
+                print(f'no images for {yr}, moving on to next year')
+                continue
+            else:
+                col_filtered = col
+                print("Year of analysis: "+ str(yr))
+                print("Number of images: "+ str(col_filtered.size().getInfo()))
+                
+                # get the annual flood frequency
+                sum, count, frequency = self.annualFloodFrequency(col_filtered, region, band)
 
-            name_file_frequency = id + "_flood_frequency_"+ str(yr)
-            name_file_sum       = id + "_flooded_pixels_over_"+ str(yr)
-            name_file_count     = id + "_available_pixels_over_"+ str(yr)
+                name_file_frequency = id + "_flood_frequency_"+ str(yr)
+                name_file_sum       = id + "_flooded_pixels_over_"+ str(yr)
+                name_file_count     = id + "_available_pixels_over_"+ str(yr)
 
-            self.downloadUrl(frequency, name_file_frequency,'frequency',outputdir,region)
-            self.downloadUrl(sum,name_file_sum,'water_sum',outputdir,region)
-            self.downloadUrl(count, name_file_count,'water_count',outputdir,region)
-            print('\n')
+                self.downloadUrl(frequency, name_file_frequency,'frequency',outputdir,region)
+                self.downloadUrl(sum,name_file_sum,'water_sum',outputdir,region)
+                self.downloadUrl(count, name_file_count,'water_count',outputdir,region)
+                print('\n')
         return
