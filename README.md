@@ -8,7 +8,7 @@ First, install the environment.
 conda env create -f react_environment.yml
 ```
 
-Next, ensure you have a google earth engine account. If not, sign-up [here](https://code.earthengine.google.com/register). You will need it to authenticate/initialize earth engine packages within the tool. For more information on how to Authenticate please visit (https://developers.google.com/earth-engine/apidocs/ee-authenticate). 
+Next, ensure you have a google earth engine account. If not, sign-up [here](https://code.earthengine.google.com/register). You will need it to authenticate/initialize earth engine packages within the tool. For more information on how to Authenticate please visit [here](https://developers.google.com/earth-engine/apidocs/ee-authenticate). 
 
 Finally, use ```example.py``` to run the script with your own region examples. A section of the Pineios River in Greece is used as a default example, but feel free to change it with your own defined geometries from e.g. a shapefile or GeoJSON file.
 
