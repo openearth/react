@@ -23,12 +23,19 @@ The flood extent tool provides insights into the spatial extension of the floode
 The river morphology tool provides insides of the erosion and accretion of the riverbanks. This tool produces a grided map of a selected region where each grid or pixel represents whether -1, 0 or 1, where -1 indicates accretion, 0 any change, and 1 erosion. The maps are produced by subtracting the flood extent map of a year of interest from the flood extent map of the year before. If a pixel was flooded one year of interest and was not the year before, a value of 1 will be shown in the river morphology map representing erosion of the river. If a pixel was not flooded one year of interest and was one year before, a value of -1 will be shown in the river morphology map representing the accretion of the river. If no change happened between the year of interest and the year before, then a value of 0 will be shown in the river morphology map representing no change in the river. The maps are computed every year and between the start and end year of the analysis. 
 ## Description of inputs
 The three tools described above require the same inputs. They can be used and run independently of each other. Find below the description of each input.
-Region [ee.Geometry].- The tool requires a geometry that can be read by Google Earth Engine. The example.py code provides a way to create a geometry based on a rectangle. To run the tool with this method the user must provide the minimum and maximum corners of the rectangle as a list of two points each in the format of GeoJSON 'Point' coordinates or a list of four numbers in the order xMin, yMin, xMax, yMax. The coordinates of the corners must be in the projection EPSG:4326. Other ways to provide create geometries with other attributes can be found at [here] https://developers.google.com/earth-engine/guides/geometries.
--Start [integer].- Start year of the period of interest. The year must be provided in YYYY format and can start from 1982 to 2022.
--End [integer].- End year of the period of interest. The year must be provided in YYYY format and must be at least one year ahead of the selected start year. 
--Band [string].- Whether “ndwi” or “mndwi”. The selected band is used to identify flooded areas with the Otsu’s method.
--Outputdir [path or string].- Local directory to save the outputs of the tools. The output must be a path object, or a string of the path preceded by “r” to ignore the whitespace characters (see the example.py code).
--Id [string].- Id of the output files. The Id will precede the name of each output file and must be given as a string. 
+
+* Region [ee.Geometry].- The tool requires a geometry that can be read by Google Earth Engine. The example.py code provides a way to create a geometry based on a rectangle. To run the tool with this method the user must provide the minimum and maximum corners of the rectangle as a list of two points each in the format of GeoJSON 'Point' coordinates or a list of four numbers in the order xMin, yMin, xMax, yMax. The coordinates of the corners must be in the projection EPSG:4326. Other ways to provide create geometries with other attributes can be found at [here] https://developers.google.com/earth-engine/guides/geometries.
+
+* Start [integer].- Start year of the period of interest. The year must be provided in YYYY format and can start from 1982 to 2022.
+
+* End [integer].- End year of the period of interest. The year must be provided in YYYY format and must be at least one year ahead of the selected start year. 
+
+* Band [string].- Whether “ndwi” or “mndwi”. The selected band is used to identify flooded areas with the Otsu’s method.
+
+* Outputdir [path or string].- Local directory to save the outputs of the tools. The output must be a path object, or a string of the path preceded by “r” to ignore the whitespace characters (see the example.py code).
+
+* Id [string].- Id of the output files. The Id will precede the name of each output file and must be given as a string.
+* 
 ## Description of outputs
 ### Flood frequency
 -Id_available_pixels_over_YYYY.tiff: Geotiff file with the number of available images per grid in the year YYYY. 
