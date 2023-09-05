@@ -35,19 +35,19 @@ The three tools described above require the same inputs. They can be used and ru
 * Outputdir [path or string].- Local directory to save the outputs of the tools. The output must be a path object, or a string of the path preceded by “r” to ignore the whitespace characters (see the example.py code).
 
 * Id [string].- Id of the output files. The Id will precede the name of each output file and must be given as a string.
-* 
+
 ## Description of outputs
 ### Flood frequency
--Id_available_pixels_over_YYYY.tiff: Geotiff file with the number of available images per grid in the year YYYY. 
--Id_flooded_pixels_over_YYYY.tiff: Geotiff file with the number of flood events per grid in the year YYYY.
-=Id_flood_frequency_2023.tiff: Geotiff file resulting from the division between the number of flood events and the number of available images per grid in the year YYYY.
+* Id_available_pixels_over_YYYY.tiff: Geotiff file with the number of available images per grid in the year YYYY. 
+* Id_flooded_pixels_over_YYYY.tiff: Geotiff file with the number of flood events per grid in the year YYYY.
+* Id_flood_frequency_2023.tiff: Geotiff file resulting from the division between the number of flood events and the number of available images per grid in the year YYYY.
 ### Flood extent
--Id_flood_extent_per_annual_mean_composite_image_2023.tiff: Geotiff file with 0 and 1 values representing the flooded areas in the YYYY.
--Id_number_of_flooded_pixels_per_annual_mean_composite_image.csv: Tabular file with the number of flooded pixels per year in the period of interest.
--Id_number_of_flooded_pixels_per_annual_mean_composite_image.html: Plot with the number of flooded pixels per year in the period of interest.
+* Id_flood_extent_per_annual_mean_composite_image_2023.tiff: Geotiff file with 0 and 1 values representing the flooded areas in the YYYY.
+* Id_number_of_flooded_pixels_per_annual_mean_composite_image.csv: Tabular file with the number of flooded pixels per year in the period of interest.
+* Id_number_of_flooded_pixels_per_annual_mean_composite_image.html: Plot with the number of flooded pixels per year in the period of interest.
 ### River morphology
--Id_morphology_YYYY.tiff: Geotiff file resulting from the subtraction between the flood extent of a year YYYY and the flood extent of a year before representing -1 for the accretion, 0 for no change, and 1 for erosion in rivers in a year.
--Id_morphology_yyyy_YYYY.tiff: Geotiff file resulting from the subtraction between the flood extent of the end year YYYY and -the flood extent of the start year yyyy of a period of analysis, representing -1 for the accretion, 0 for no change, and 1 for erosion in rivers in a period of analysis.
+* Id_morphology_YYYY.tiff: Geotiff file resulting from the subtraction between the flood extent of a year YYYY and the flood extent of a year before representing -1 for the accretion, 0 for no change, and 1 for erosion in rivers in a year.
+* Id_morphology_yyyy_YYYY.tiff: Geotiff file resulting from the subtraction between the flood extent of the end year YYYY and -the flood extent of the start year yyyy of a period of analysis, representing -1 for the accretion, 0 for no change, and 1 for erosion in rivers in a period of analysis.
 
 ## Contact
 For further enquiries regarding the use of the software, please approach the following developers: Mario Fuentes Monjaraz (Mario.FuentesMonjaraz@deltares.nl) and Robyn Gwee (Robyn.Gwee@deltares.nl). The REACT tool has been developed with support from the Deltares Water Resources Strategic Research Programme.
