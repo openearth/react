@@ -76,12 +76,18 @@ class React:
             'scale': 30,
             'format': 'GEO_TIFF'
         })
+
+        try:
+            os.mkdir(outputdir)
+        except FileExistsError:
+            pass
         # urllib.request.urlretrieve(urlD, file_path_tiff)
 
         try:
             urllib.request.urlretrieve(urlD, file_path_tiff)
             print(f"{name_file} has been downloaded successfully.")
-        except:
+        except Exception as e:
+            print(str(e))
             print(f"Failed to download {name_file}.")
         return 
 
