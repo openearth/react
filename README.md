@@ -12,7 +12,7 @@ Next, ensure you have a google earth engine account. If not, sign-up [here](http
 
 Finally, use ```example.py``` to run the script with your own region examples. A section of the Pineios River in Greece is used as a default example, but feel free to change it with your own defined geometries from e.g. a shapefile or GeoJSON file.
 
-## User guide
+## User guide 
 This document describes the functions implemented in REACT using Google Earth Engine resources. REACT tools produce Earth Observations information on 1) flood frequency, 2) flood extent, and 3) river morphology. Below you can find a general description of each tool and details of the inputs and outputs of the tool.
 ## Description of tools 
 ### Flood frequency
@@ -49,7 +49,17 @@ The three tools described above require the same inputs. They can be used and ru
 * Id_morphology_YYYY.tiff: Geotiff file resulting from the subtraction between the flood extent of a year YYYY and the flood extent of a year before representing -1 for the accretion, 0 for no change, and 1 for erosion in rivers in a year.
 * Id_morphology_yyyy_YYYY.tiff: Geotiff file resulting from the subtraction between the flood extent of the end year YYYY and -the flood extent of the start year yyyy of a period of analysis, representing -1 for the accretion, 0 for no change, and 1 for erosion in rivers in a period of analysis.
 
-### FPZ
+## User guide (Tools in development)
+## Description of tools 
+### Fuctional Process Zones (FPZs)
+The Functional Process Zones (FPZs) tool assigns a FPZs classification to every river reaches of a selected catchment as defined by HydroSheds (https://www.hydrosheds.org/). The classification is currecntly taking as criteria of classification three main hydrological features: mean river reach elevation, mean river reach slope, and river reach sinuosity. The river reach features are calculated of the fly for the selected catchment, and each river reach is classified based in the following knoledge rules:
+
+Classification Name	ELEVATION (m)	SLOPE (%)	SINUOSITY
+Lowland Alluvial	< 200	< 2	> 1.4
+Open-valley Mid-altitude	200 ≤ elevation ≤ 800	2 ≤ slope ≤ 4	> 1.2
+Open-Valley Highland	> 800	4 ≤ slope ≤ 10	1.0 ≤ sinuosity ≤ 1.2
+Highland High-Energy	> 800	> 10	1.0 ≤ sinuosity ≤ 1.1
+
 
 ## Contact
 For further enquiries regarding the use of the software, please approach the following developers: Mario Fuentes Monjaraz (Mario.FuentesMonjaraz@deltares.nl), Robyn Gwee (Robyn.Gwee@deltares.nl) and Natasha Flores (Natasha.Flores@deltares.nl). The REACT tool has been developed with support from the Deltares Water Resources Strategic Research Programme.
