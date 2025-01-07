@@ -52,9 +52,23 @@ The three tools described above require the same inputs. They can be used and ru
 ## User guide (Tools in development)
 ## Description of tools 
 ### Fuctional Process Zones (FPZs)
-The Functional Process Zones (FPZs) tool assigns a FPZs classification to every river reaches of a selected catchment as defined by HydroSheds (https://www.hydrosheds.org/). The classification is currecntly taking as criteria of classification three main hydrological features: mean river reach elevation, mean river reach slope, and river reach sinuosity. The river reach features are calculated of the fly for the selected catchment, and each river reach is classified based in the following knoledge rules:
+The Functional Process Zones (FPZs) tool assigns an FPZ classification to every river reach within a selected catchment, as defined by HydroSHEDS (https://www.hydrosheds.org/). The classification currently uses three main hydrological features as criteria: mean river reach elevation, mean river reach slope, and river reach sinuosity. These features are calculated on the fly for the river network of the selected catchment, and each river reach is classified based on the following knowledge rules:
 
-![Table Description](react/FPZ_classification.png)
+![Table Description](react/FPZs_classification.png)
+
+The tool is currently available as the get_fpz() function in the react/FPZs_REACT.ipynb Jupyter notebook. The input and output of the function are described below.
+
+## Description of inputs
+* coordinates [list].- List of coordinates in the WGS84 Coordinate Reference System [longitude, latitude] representing the catchment of interest.
+
+* hydrobasins_col [ee.FeatureCollection].- Google Earth Engine feature collection containing the HydroSHEDS global catchment dataset.
+
+* rivers_col [ee.FeatureCollection].- Google Earth Engine feature collection containing the HydroSHEDS global river network dataset. 
+
+* dem_img [ee.Image].- Digital Elevation Model (DEM) provided as a Google Earth Engine image. The workflow currently works with the Shuttle Radar Topography Mission (SRTM) DEM.
+
+## Description of outputs
+* fpzs_output.geojson: GeoJSON file containing the geometries of the river network within the selected catchment. Attributes include: mean river reach elevation, mean river reach slope, river reach sinuosity, and FPZs classification per river reach. The file can be opened in GIS software to visualize the spatial data and explore the attributes. Additionally, the vector data is saved in the memory of the Jupyter notebook as gdf_rivers and can be visualized using the plot_fpz() function, which displays the FPZ classification on a dynamic map.
 
 ## Contact
 For further enquiries regarding the use of the software, please approach the following developers: Mario Fuentes Monjaraz (Mario.FuentesMonjaraz@deltares.nl), Robyn Gwee (Robyn.Gwee@deltares.nl) and Natasha Flores (Natasha.Flores@deltares.nl). The REACT tool has been developed with support from the Deltares Water Resources Strategic Research Programme.
