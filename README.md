@@ -54,12 +54,7 @@ The three tools described above require the same inputs. They can be used and ru
 ### Fuctional Process Zones (FPZs)
 The Functional Process Zones (FPZs) tool assigns a FPZs classification to every river reaches of a selected catchment as defined by HydroSheds (https://www.hydrosheds.org/). The classification is currecntly taking as criteria of classification three main hydrological features: mean river reach elevation, mean river reach slope, and river reach sinuosity. The river reach features are calculated of the fly for the selected catchment, and each river reach is classified based in the following knoledge rules:
 
-Classification Name	ELEVATION (m)	SLOPE (%)	SINUOSITY
-Lowland Alluvial	< 200	< 2	> 1.4
-Open-valley Mid-altitude	200 ≤ elevation ≤ 800	2 ≤ slope ≤ 4	> 1.2
-Open-Valley Highland	> 800	4 ≤ slope ≤ 10	1.0 ≤ sinuosity ≤ 1.2
-Highland High-Energy	> 800	> 10	1.0 ≤ sinuosity ≤ 1.1
-
+![Table Description](react\react\FPZ_classification.png)
 
 ## Contact
 For further enquiries regarding the use of the software, please approach the following developers: Mario Fuentes Monjaraz (Mario.FuentesMonjaraz@deltares.nl), Robyn Gwee (Robyn.Gwee@deltares.nl) and Natasha Flores (Natasha.Flores@deltares.nl). The REACT tool has been developed with support from the Deltares Water Resources Strategic Research Programme.
